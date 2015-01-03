@@ -1,0 +1,321 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="db_EshopperModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblBrand">
+          <Key>
+            <PropertyRef Name="PK_iBrandID" />
+          </Key>
+          <Property Name="PK_iBrandID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sBrandName" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblCategory">
+          <Key>
+            <PropertyRef Name="PK_iCategoryID" />
+          </Key>
+          <Property Name="PK_iCategoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sCategoryName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="bParent" Type="bit" Nullable="false" />
+          <Property Name="SK_iCategoryID" Type="int" />
+        </EntityType>
+        <EntityType Name="tblCondition">
+          <Key>
+            <PropertyRef Name="PK_iConditionID" />
+          </Key>
+          <Property Name="PK_iConditionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sConditionName" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblProduct">
+          <Key>
+            <PropertyRef Name="PK_iProductID" />
+          </Key>
+          <Property Name="PK_iProductID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sProductName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="sAvailability" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="FK_iConditionID" Type="int" Nullable="false" />
+          <Property Name="fCost" Type="float" Nullable="false" />
+          <Property Name="FK_iCategoryID" Type="int" Nullable="false" />
+          <Property Name="FK_iBrandID" Type="int" Nullable="false" />
+          <Property Name="sDetail" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="sImage01" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="sImage02" Type="nvarchar" MaxLength="500" />
+          <Property Name="sImage03" Type="nvarchar" MaxLength="500" />
+          <Property Name="sImage04" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <Association Name="FK_tblCategory_tblCategory">
+          <End Role="tblCategory" Type="Self.tblCategory" Multiplicity="0..1" />
+          <End Role="tblCategory1" Type="Self.tblCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCategory">
+              <PropertyRef Name="PK_iCategoryID" />
+            </Principal>
+            <Dependent Role="tblCategory1">
+              <PropertyRef Name="SK_iCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblProduct_tblBrand">
+          <End Role="tblBrand" Type="Self.tblBrand" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblProduct" Type="Self.tblProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblBrand">
+              <PropertyRef Name="PK_iBrandID" />
+            </Principal>
+            <Dependent Role="tblProduct">
+              <PropertyRef Name="FK_iBrandID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblProduct_tblCategory">
+          <End Role="tblCategory" Type="Self.tblCategory" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblProduct" Type="Self.tblProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCategory">
+              <PropertyRef Name="PK_iCategoryID" />
+            </Principal>
+            <Dependent Role="tblProduct">
+              <PropertyRef Name="FK_iCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblProduct_tblCondition">
+          <End Role="tblCondition" Type="Self.tblCondition" Multiplicity="1" />
+          <End Role="tblProduct" Type="Self.tblProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCondition">
+              <PropertyRef Name="PK_iConditionID" />
+            </Principal>
+            <Dependent Role="tblProduct">
+              <PropertyRef Name="FK_iConditionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="db_EshopperModelStoreContainer">
+          <EntitySet Name="tblBrand" EntityType="Self.tblBrand" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblCategory" EntityType="Self.tblCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblCondition" EntityType="Self.tblCondition" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblProduct" EntityType="Self.tblProduct" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_tblCategory_tblCategory" Association="Self.FK_tblCategory_tblCategory">
+            <End Role="tblCategory" EntitySet="tblCategory" />
+            <End Role="tblCategory1" EntitySet="tblCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblProduct_tblBrand" Association="Self.FK_tblProduct_tblBrand">
+            <End Role="tblBrand" EntitySet="tblBrand" />
+            <End Role="tblProduct" EntitySet="tblProduct" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblProduct_tblCategory" Association="Self.FK_tblProduct_tblCategory">
+            <End Role="tblCategory" EntitySet="tblCategory" />
+            <End Role="tblProduct" EntitySet="tblProduct" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblProduct_tblCondition" Association="Self.FK_tblProduct_tblCondition">
+            <End Role="tblCondition" EntitySet="tblCondition" />
+            <End Role="tblProduct" EntitySet="tblProduct" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="db_EshopperModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tblBrand">
+          <Key>
+            <PropertyRef Name="PK_iBrandID" />
+          </Key>
+          <Property Name="PK_iBrandID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sBrandName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="tblProducts" Relationship="Self.FK_tblProduct_tblBrand" FromRole="tblBrand" ToRole="tblProduct" />
+        </EntityType>
+        <EntityType Name="tblCategory">
+          <Key>
+            <PropertyRef Name="PK_iCategoryID" />
+          </Key>
+          <Property Name="PK_iCategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sCategoryName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="bParent" Type="Boolean" Nullable="false" />
+          <Property Name="SK_iCategoryID" Type="Int32" />
+          <NavigationProperty Name="tblCategory1" Relationship="Self.FK_tblCategory_tblCategory" FromRole="tblCategory" ToRole="tblCategory1" />
+          <NavigationProperty Name="tblCategory2" Relationship="Self.FK_tblCategory_tblCategory" FromRole="tblCategory1" ToRole="tblCategory" />
+          <NavigationProperty Name="tblProducts" Relationship="Self.FK_tblProduct_tblCategory" FromRole="tblCategory" ToRole="tblProduct" />
+        </EntityType>
+        <EntityType Name="tblCondition">
+          <Key>
+            <PropertyRef Name="PK_iConditionID" />
+          </Key>
+          <Property Name="PK_iConditionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sConditionName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="tblProducts" Relationship="Self.FK_tblProduct_tblCondition" FromRole="tblCondition" ToRole="tblProduct" />
+        </EntityType>
+        <EntityType Name="tblProduct">
+          <Key>
+            <PropertyRef Name="PK_iProductID" />
+          </Key>
+          <Property Name="PK_iProductID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sProductName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sAvailability" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FK_iConditionID" Type="Int32" Nullable="false" />
+          <Property Name="fCost" Type="Double" Nullable="false" />
+          <Property Name="FK_iCategoryID" Type="Int32" Nullable="false" />
+          <Property Name="FK_iBrandID" Type="Int32" Nullable="false" />
+          <Property Name="sDetail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="tblBrand" Relationship="Self.FK_tblProduct_tblBrand" FromRole="tblProduct" ToRole="tblBrand" />
+          <NavigationProperty Name="tblCategory" Relationship="Self.FK_tblProduct_tblCategory" FromRole="tblProduct" ToRole="tblCategory" />
+          <NavigationProperty Name="tblCondition" Relationship="Self.FK_tblProduct_tblCondition" FromRole="tblProduct" ToRole="tblCondition" />
+          <Property Name="sImage01" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="sImage02" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="sImage03" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="sImage04" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_tblProduct_tblBrand">
+          <End Role="tblBrand" Type="Self.tblBrand" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblProduct" Type="Self.tblProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblBrand">
+              <PropertyRef Name="PK_iBrandID" />
+            </Principal>
+            <Dependent Role="tblProduct">
+              <PropertyRef Name="FK_iBrandID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblCategory_tblCategory">
+          <End Role="tblCategory" Type="Self.tblCategory" Multiplicity="0..1" />
+          <End Role="tblCategory1" Type="Self.tblCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCategory">
+              <PropertyRef Name="PK_iCategoryID" />
+            </Principal>
+            <Dependent Role="tblCategory1">
+              <PropertyRef Name="SK_iCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblProduct_tblCategory">
+          <End Role="tblCategory" Type="Self.tblCategory" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblProduct" Type="Self.tblProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCategory">
+              <PropertyRef Name="PK_iCategoryID" />
+            </Principal>
+            <Dependent Role="tblProduct">
+              <PropertyRef Name="FK_iCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblProduct_tblCondition">
+          <End Role="tblCondition" Type="Self.tblCondition" Multiplicity="1" />
+          <End Role="tblProduct" Type="Self.tblProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCondition">
+              <PropertyRef Name="PK_iConditionID" />
+            </Principal>
+            <Dependent Role="tblProduct">
+              <PropertyRef Name="FK_iConditionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="db_EshopperEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblBrands" EntityType="Self.tblBrand" />
+          <EntitySet Name="tblCategories" EntityType="Self.tblCategory" />
+          <EntitySet Name="tblConditions" EntityType="Self.tblCondition" />
+          <EntitySet Name="tblProducts" EntityType="Self.tblProduct" />
+          <AssociationSet Name="FK_tblProduct_tblBrand" Association="Self.FK_tblProduct_tblBrand">
+            <End Role="tblBrand" EntitySet="tblBrands" />
+            <End Role="tblProduct" EntitySet="tblProducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblCategory_tblCategory" Association="Self.FK_tblCategory_tblCategory">
+            <End Role="tblCategory" EntitySet="tblCategories" />
+            <End Role="tblCategory1" EntitySet="tblCategories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblProduct_tblCategory" Association="Self.FK_tblProduct_tblCategory">
+            <End Role="tblCategory" EntitySet="tblCategories" />
+            <End Role="tblProduct" EntitySet="tblProducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblProduct_tblCondition" Association="Self.FK_tblProduct_tblCondition">
+            <End Role="tblCondition" EntitySet="tblConditions" />
+            <End Role="tblProduct" EntitySet="tblProducts" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="db_EshopperModelStoreContainer" CdmEntityContainer="db_EshopperEntities">
+          <EntitySetMapping Name="tblBrands">
+            <EntityTypeMapping TypeName="db_EshopperModel.tblBrand">
+              <MappingFragment StoreEntitySet="tblBrand">
+                <ScalarProperty Name="PK_iBrandID" ColumnName="PK_iBrandID" />
+                <ScalarProperty Name="sBrandName" ColumnName="sBrandName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblCategories">
+            <EntityTypeMapping TypeName="db_EshopperModel.tblCategory">
+              <MappingFragment StoreEntitySet="tblCategory">
+                <ScalarProperty Name="PK_iCategoryID" ColumnName="PK_iCategoryID" />
+                <ScalarProperty Name="sCategoryName" ColumnName="sCategoryName" />
+                <ScalarProperty Name="bParent" ColumnName="bParent" />
+                <ScalarProperty Name="SK_iCategoryID" ColumnName="SK_iCategoryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblConditions">
+            <EntityTypeMapping TypeName="db_EshopperModel.tblCondition">
+              <MappingFragment StoreEntitySet="tblCondition">
+                <ScalarProperty Name="PK_iConditionID" ColumnName="PK_iConditionID" />
+                <ScalarProperty Name="sConditionName" ColumnName="sConditionName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblProducts">
+            <EntityTypeMapping TypeName="db_EshopperModel.tblProduct">
+              <MappingFragment StoreEntitySet="tblProduct">
+                <ScalarProperty Name="sImage04" ColumnName="sImage04" />
+                <ScalarProperty Name="sImage03" ColumnName="sImage03" />
+                <ScalarProperty Name="sImage02" ColumnName="sImage02" />
+                <ScalarProperty Name="sImage01" ColumnName="sImage01" />
+                <ScalarProperty Name="PK_iProductID" ColumnName="PK_iProductID" />
+                <ScalarProperty Name="sProductName" ColumnName="sProductName" />
+                <ScalarProperty Name="sAvailability" ColumnName="sAvailability" />
+                <ScalarProperty Name="FK_iConditionID" ColumnName="FK_iConditionID" />
+                <ScalarProperty Name="fCost" ColumnName="fCost" />
+                <ScalarProperty Name="FK_iCategoryID" ColumnName="FK_iCategoryID" />
+                <ScalarProperty Name="FK_iBrandID" ColumnName="FK_iBrandID" />
+                <ScalarProperty Name="sDetail" ColumnName="sDetail" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
