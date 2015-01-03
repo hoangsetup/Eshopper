@@ -13,6 +13,8 @@
         <AssociationConnector Association="db_EshopperModel.FK_tblCategory_tblCategory" ManuallyRouted="false" />
         <AssociationConnector Association="db_EshopperModel.FK_tblProduct_tblCategory" ManuallyRouted="false" />
         <AssociationConnector Association="db_EshopperModel.FK_tblProduct_tblCondition" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="db_EshopperModel.tblReview" Width="1.5" PointX="5.25" PointY="1.875" />
+        <AssociationConnector Association="db_EshopperModel.FK_tblReview_tblProduct" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

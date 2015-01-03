@@ -27,8 +27,11 @@
                         </div>
                         <div class="product-overlay">
                             <div class="overlay-content">
+
                                 <h2>$<%=product.fCost %></h2>
-                                <p><%=product.sProductName %></p>
+                                <a href="<% =Url.Action("ProductDetails/" + product.PK_iProductID) %>">
+                                    <p><%=product.sProductName %></p>
+                                </a>
                                 <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
                             </div>
                         </div>
@@ -89,12 +92,15 @@
                 </ul>
             </div>
             <div class="tab-content">
-                <% foreach (tblCategory category in categoriesTag)
-                   {
+                <% 
+                    bool isF = true;
+                    foreach (tblCategory category in categoriesTag)
+                    {
                 %>
-                <div class="tab-pane fade active in" id="<%=category.sCategoryName %>">
+                <div class="tab-pane fade <%=(isF)?"active":"" %> in " id="<%=category.sCategoryName %>">
                     <% foreach (tblProduct product in category.tblProducts.OrderByDescending(product => product.PK_iProductID).Take(4))
                        {
+                           isF = false;
                     %>
                     <div class="col-sm-3">
                         <div class="product-image-wrapper">
@@ -102,7 +108,9 @@
                                 <div class="productinfo text-center">
                                     <img src="../../images/home/<%=product.sImage01 %>" alt="<%=product.sProductName %>" />
                                     <h2>$<%=product.fCost %></h2>
-                                    <p><%=product.sProductName %></p>
+                                    <a href="<% =Url.Action("ProductDetails/" + product.PK_iProductID) %>">
+                                        <p><%=product.sProductName %></p>
+                                    </a>
                                     <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
                                 </div>
                             </div>
@@ -113,7 +121,7 @@
                     %>
                 </div>
                 <%
-                   }
+                    }
                 %>
             </div>
             <!--/tab-content -->
@@ -127,86 +135,52 @@
             <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                     <div class="item active">
+                        <% List<tblProduct> productsRecomment = (List<tblProduct>)ViewData["recommentItems"];
+                           for (int i = 0; i < 3; i++)
+                           {
+                        %>
                         <div class="col-sm-4">
                             <div class="product-image-wrapper">
                                 <div class="single-products">
                                     <div class="productinfo text-center">
-                                        <img src="../../images/home/recommend1.jpg" alt="" />
-                                        <h2>$56</h2>
-                                        <p>Easy Polo Black Edition</p>
-                                        <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-                                    </div>
+                                        <img src="../../images/home/<%=productsRecomment[i].sImage01 %>" alt="" />
+                                        <h2>$<%=productsRecomment[i].fCost %></h2>
 
+                                        <a href="<% =Url.Action("ProductDetails/" + productsRecomment[i].PK_iProductID) %>">
+                                            <p><%=productsRecomment[i].sProductName %></p>
+                                        </a>
+
+                                        <button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <div class="product-image-wrapper">
-                                <div class="single-products">
-                                    <div class="productinfo text-center">
-                                        <img src="../../images/home/recommend2.jpg" alt="" />
-                                        <h2>$56</h2>
-                                        <p>Easy Polo Black Edition</p>
-                                        <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="product-image-wrapper">
-                                <div class="single-products">
-                                    <div class="productinfo text-center">
-                                        <img src="../../images/home/recommend3.jpg" alt="" />
-                                        <h2>$56</h2>
-                                        <p>Easy Polo Black Edition</p>
-                                        <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
+                        <%
+                           }
+                        %>
                     </div>
                     <div class="item">
+                        <% 
+                            for (int i = 3; i < 6; i++)
+                            {
+                        %>
                         <div class="col-sm-4">
                             <div class="product-image-wrapper">
                                 <div class="single-products">
                                     <div class="productinfo text-center">
-                                        <img src="../../images/home/recommend1.jpg" alt="" />
-                                        <h2>$56</h2>
-                                        <p>Easy Polo Black Edition</p>
-                                        <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                                        <img src="../../images/home/<%=productsRecomment[i].sImage01 %>" alt="" />
+                                        <h2>$<%=productsRecomment[i].fCost %></h2>
+                                        <a href="<% =Url.Action("ProductDetails/" + productsRecomment[i].PK_iProductID) %>">
+                                            <p><%=productsRecomment[i].sProductName %></p>
+                                        </a>
+                                        <button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <div class="product-image-wrapper">
-                                <div class="single-products">
-                                    <div class="productinfo text-center">
-                                        <img src="../../images/home/recommend2.jpg" alt="" />
-                                        <h2>$56</h2>
-                                        <p>Easy Polo Black Edition</p>
-                                        <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="product-image-wrapper">
-                                <div class="single-products">
-                                    <div class="productinfo text-center">
-                                        <img src="../../images/home/recommend3.jpg" alt="" />
-                                        <h2>$56</h2>
-                                        <p>Easy Polo Black Edition</p>
-                                        <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
+                        <%
+                            }
+                        %>
                     </div>
                 </div>
                 <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">

@@ -146,6 +146,9 @@
     <Compile Include="Models\tblProduct.cs">
       <DependentUpon>ModelEshopper.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tblReview.cs">
+      <DependentUpon>ModelEshopper.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -231,6 +234,7 @@
     <Content Include="js\price-range.js" />
     <Content Include="Views\Home\Category.aspx" />
     <Content Include="Views\Home\Index.aspx" />
+    <Content Include="Views\Home\ProductDetails.aspx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

@@ -45,6 +45,18 @@
           <Property Name="sImage03" Type="nvarchar" MaxLength="500" />
           <Property Name="sImage04" Type="nvarchar" MaxLength="500" />
         </EntityType>
+        <EntityType Name="tblReview">
+          <Key>
+            <PropertyRef Name="PK_iReviewID" />
+          </Key>
+          <Property Name="PK_iReviewID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FK_iProductID" Type="int" Nullable="false" />
+          <Property Name="sName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="sEmail" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="FK_iUesrID" Type="int" />
+          <Property Name="sReview" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="tDatetime" Type="date" />
+        </EntityType>
         <Association Name="FK_tblCategory_tblCategory">
           <End Role="tblCategory" Type="Self.tblCategory" Multiplicity="0..1" />
           <End Role="tblCategory1" Type="Self.tblCategory" Multiplicity="*" />
@@ -97,11 +109,26 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblReview_tblProduct">
+          <End Role="tblProduct" Type="Self.tblProduct" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblReview" Type="Self.tblReview" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProduct">
+              <PropertyRef Name="PK_iProductID" />
+            </Principal>
+            <Dependent Role="tblReview">
+              <PropertyRef Name="FK_iProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="db_EshopperModelStoreContainer">
           <EntitySet Name="tblBrand" EntityType="Self.tblBrand" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblCategory" EntityType="Self.tblCategory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblCondition" EntityType="Self.tblCondition" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblProduct" EntityType="Self.tblProduct" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblReview" EntityType="Self.tblReview" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_tblCategory_tblCategory" Association="Self.FK_tblCategory_tblCategory">
             <End Role="tblCategory" EntitySet="tblCategory" />
             <End Role="tblCategory1" EntitySet="tblCategory" />
@@ -117,6 +144,10 @@
           <AssociationSet Name="FK_tblProduct_tblCondition" Association="Self.FK_tblProduct_tblCondition">
             <End Role="tblCondition" EntitySet="tblCondition" />
             <End Role="tblProduct" EntitySet="tblProduct" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblReview_tblProduct" Association="Self.FK_tblReview_tblProduct">
+            <End Role="tblProduct" EntitySet="tblProduct" />
+            <End Role="tblReview" EntitySet="tblReview" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -170,6 +201,7 @@
           <Property Name="sImage02" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="sImage03" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="sImage04" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblReviews" Relationship="db_EshopperModel.FK_tblReview_tblProduct" FromRole="tblProduct" ToRole="tblReview" />
         </EntityType>
         <Association Name="FK_tblProduct_tblBrand">
           <End Role="tblBrand" Type="Self.tblBrand" Multiplicity="1">
@@ -244,7 +276,39 @@
             <End Role="tblCondition" EntitySet="tblConditions" />
             <End Role="tblProduct" EntitySet="tblProducts" />
           </AssociationSet>
+          <EntitySet Name="tblReviews" EntityType="db_EshopperModel.tblReview" />
+          <AssociationSet Name="FK_tblReview_tblProduct" Association="db_EshopperModel.FK_tblReview_tblProduct">
+            <End Role="tblProduct" EntitySet="tblProducts" />
+            <End Role="tblReview" EntitySet="tblReviews" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="tblReview">
+          <Key>
+            <PropertyRef Name="PK_iReviewID" />
+          </Key>
+          <Property Name="PK_iReviewID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FK_iProductID" Type="Int32" Nullable="false" />
+          <Property Name="sName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="sEmail" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="FK_iUesrID" Type="Int32" />
+          <Property Name="sReview" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblProduct" Relationship="db_EshopperModel.FK_tblReview_tblProduct" FromRole="tblReview" ToRole="tblProduct" />
+          <Property Name="tDatetime" Type="DateTime" Precision="0" />
+        </EntityType>
+        <Association Name="FK_tblReview_tblProduct">
+          <End Type="db_EshopperModel.tblProduct" Role="tblProduct" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="db_EshopperModel.tblReview" Role="tblReview" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProduct">
+              <PropertyRef Name="PK_iProductID" />
+            </Principal>
+            <Dependent Role="tblReview">
+              <PropertyRef Name="FK_iProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -292,6 +356,19 @@
                 <ScalarProperty Name="FK_iCategoryID" ColumnName="FK_iCategoryID" />
                 <ScalarProperty Name="FK_iBrandID" ColumnName="FK_iBrandID" />
                 <ScalarProperty Name="sDetail" ColumnName="sDetail" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblReviews">
+            <EntityTypeMapping TypeName="db_EshopperModel.tblReview">
+              <MappingFragment StoreEntitySet="tblReview">
+                <ScalarProperty Name="tDatetime" ColumnName="tDatetime" />
+                <ScalarProperty Name="sReview" ColumnName="sReview" />
+                <ScalarProperty Name="FK_iUesrID" ColumnName="FK_iUesrID" />
+                <ScalarProperty Name="sEmail" ColumnName="sEmail" />
+                <ScalarProperty Name="sName" ColumnName="sName" />
+                <ScalarProperty Name="FK_iProductID" ColumnName="FK_iProductID" />
+                <ScalarProperty Name="PK_iReviewID" ColumnName="PK_iReviewID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

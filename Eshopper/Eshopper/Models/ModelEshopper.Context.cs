@@ -29,5 +29,6 @@ namespace Eshopper.Models
         public DbSet<tblCategory> tblCategories { get; set; }
         public DbSet<tblCondition> tblConditions { get; set; }
         public DbSet<tblProduct> tblProducts { get; set; }
+        public DbSet<tblReview> tblReviews { get; set; }
     }
 }

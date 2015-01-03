@@ -20,6 +20,12 @@ namespace Eshopper.Controllers
         {
             ViewData["categories"] = (from category in DataContext.tblCategories select category).ToList();
             ViewData["brands"] = (from brand in DataContext.tblBrands select brand).ToList();
+            ViewData["categoryTag"] =
+                DataContext.tblCategories.Where(category => category.tblCategory1.Count == 0 && category.bParent).Take(6)
+                    .ToList();
+
+            ViewData["recommentItems"] =
+                DataContext.tblProducts.OrderByDescending(product => product.PK_iProductID).Take(6).ToList();
         }
     }
 }

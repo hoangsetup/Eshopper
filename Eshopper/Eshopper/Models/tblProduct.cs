@@ -14,6 +14,11 @@ namespace Eshopper.Models
     
     public partial class tblProduct
     {
+        public tblProduct()
+        {
+            this.tblReviews = new HashSet<tblReview>();
+        }
+    
         public int PK_iProductID { get; set; }
         public string sProductName { get; set; }
         public string sAvailability { get; set; }
@@ -30,5 +35,6 @@ namespace Eshopper.Models
         public virtual tblBrand tblBrand { get; set; }
         public virtual tblCategory tblCategory { get; set; }
         public virtual tblCondition tblCondition { get; set; }
+        public virtual ICollection<tblReview> tblReviews { get; set; }
     }
 }
