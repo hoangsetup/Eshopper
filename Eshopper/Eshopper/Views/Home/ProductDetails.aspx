@@ -112,7 +112,7 @@
                             }
                         }/*end foreach*/
                     %>
-                    <li class=""><a href="#reviews" data-toggle="tab">Reviews (5)</a></li>
+                    <li class=""><a href="#reviews" data-toggle="tab">Reviews (<%=((List<tblReview>)ViewData["reviews"]).Count %>)</a></li>
                 </ul>
             </div>
             <div class="tab-content">
@@ -149,7 +149,7 @@
                     }
                 %>
                 <div class="tab-pane fade in" id="reviews">
-                    <div class="col-sm-12">
+                    <div class="col-sm-12" id="review-box">
                         <% List<tblReview> reviews = (List<tblReview>)ViewData["reviews"];
 
                            foreach (tblReview review in reviews)
@@ -178,9 +178,12 @@
                         <%=Html.TextArea("content") %>
                         <b>Rating: </b>
                         <img src="../../images/product-details/rating.png" alt="" />
-                        <button type="submit" class="btn btn-default pull-right">
-                            Submit
-                        </button>
+                        <% =Ajax.ActionLink("Submit","AddReview", "Home",null , new AjaxOptions()
+                            {
+                                HttpMethod = "GET",
+                                UpdateTargetId = "review-box",
+                                InsertionMode = InsertionMode.InsertBefore
+                            }, new {@class="btn btn-default pull-right"}) %>
                         <%
                            } 
                         %>

@@ -16,11 +16,21 @@ namespace Eshopper.Controllers
             return View();
         }
 
-        public ActionResult Category(int id)
+        public ActionResult Category(int? id)
         {
-            ViewData["title"] = "Category | E-Shopper";
+
+
             ViewData["products"] = DataContext.tblProducts.Where(product => product.FK_iCategoryID == id).ToList();
-            return View();
+            tblCategory category = DataContext.tblCategories.FirstOrDefault(x => x.PK_iCategoryID == id);
+            if (category != null)
+            {
+                ViewData["title"] = (category.sCategoryName + " | E-Shopper");
+                return View();
+            }
+            else
+            {
+                return View("_Error404");
+            }
         }
 
         public ActionResult ProductDetails(int id)
@@ -32,19 +42,27 @@ namespace Eshopper.Controllers
             return View();
         }
 
-        public ActionResult AddReview(FormCollection collection)
+        public PartialViewResult AddReview(FormCollection collection)
         {
+            /*            tblReview review = new tblReview
+                        {
+                            FK_iProductID = Convert.ToInt32(collection["id"]),
+                            sEmail = collection["email"],
+                            sName = collection["name"],
+                            sReview = collection["content"],
+                            tDatetime = DateTime.Now
+                        };*/
             tblReview review = new tblReview
             {
-                FK_iProductID = Convert.ToInt32(collection["id"]),
-                sEmail = collection["email"],
-                sName = collection["name"],
-                sReview = collection["content"],
+                FK_iProductID = 3,
+                sEmail = "email",
+                sName = "name",
+                sReview = "content",
                 tDatetime = DateTime.Now
             };
             DataContext.tblReviews.Add(review);
             DataContext.SaveChanges();
-            return RedirectToAction("ProductDetails/" + collection["id"]);
+            return PartialView("_AddReview", review);
         }
     }
 }
